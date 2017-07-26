@@ -96,7 +96,7 @@ class ApiController extends Controller {
 //                return ['access_token' => Yii::$app->request->getBodyParam('email')];
 
         if ($model->load(Yii::$app->getRequest()->getBodyParams(), '') && $model->login()) {
-            return ['access_token' => Yii::$app->user->identity->getAuthKey()];
+            return ['auth_key' => Yii::$app->user->identity->getAuthKey()];
 //            return ['access_token' => '1234567890'];
         } else {
             $model->validate();

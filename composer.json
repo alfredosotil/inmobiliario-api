@@ -18,7 +18,10 @@
         "yiisoft/yii2": "~2.0.5",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
-        "yiisoft/yii2-imagine": "^2.1"
+        "yiisoft/yii2-imagine": "^2.1",
+        "sizeg/yii2-jwt": "^1.0",
+        "thamtech/yii2-jws": "^1.0",
+        "firebase/php-jwt": "^5.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

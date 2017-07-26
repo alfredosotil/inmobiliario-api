@@ -11,6 +11,21 @@ return [
     'basePath' => dirname(__DIR__),
     'language' => 'en-US',
     'components' => [
+//        'jwt' => [
+//            'class' => 'sizeg\jwt\Jwt',
+//            'key' => 'inmobiliario',
+//        ],
+//        'jwsManager' => [
+//            'class' => 'thamtech\jws\components\JwsManager',
+//            'pubkey' => '@app/cert/www.inmobiliario.com.pe.crt',
+//            'pvtkey' => '@app/cert/www.inmobiliario.com.pe.crt',
+        // The settings below are optional. Defaults will be used if not set here.
+        //'encoder' => 'Namshi\JOSE\Base64\Base64UrlSafeEncoder',
+        //'refreshExp' => '24 hours',
+        //'exp' =>  1 hour',
+        //'alg' => 'RS256',
+        //'jwsClass' => 'Namshi\JOSE\SimpleJWS',
+//        ],
         'db' => $dbParams,
         'urlManager' => [
             // Disable index.php
@@ -32,6 +47,9 @@ return [
         ],
         'user' => [
             'identityClass' => 'app\models\User',
+            'enableSession' => false,
+            'loginUrl' => null,
+//            'enableAutoLogin' => true,
         ],
         'request' => [
             'parsers' => [

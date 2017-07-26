@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "user".
@@ -50,17 +51,24 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
     public function rules() {
         return [
             [['user_type_id', 'user_state_id', 'name', 'lastname', 'identificator', 'identificator_type_id', 'email', 'phone', 'username', 'password'], 'required'],
-            [['user_type_id', 'user_state_id', 'identificator_type_id', 'active'], 'integer'],
-            [['birthday', 'created_at', 'updated_at'], 'safe'],
-            [['name', 'lastname', 'identificator', 'username', 'password', 'auth_key', 'access_token'], 'string', 'max' => 50],
+            [['user_type_id', 'user_state_id', 'identificator_type_id', 'created_at', 'updated_at', 'active'], 'integer'],
+            [['birthday'], 'safe'],
+            [['name', 'lastname', 'identificator', 'username', 'password', 'access_token'], 'string', 'max' => 50],
             [['email', 'image'], 'string', 'max' => 100],
             [['phone', 'fax'], 'string', 'max' => 20],
             [['sex'], 'string', 'max' => 1],
+            [['auth_key'], 'string', 'max' => 400],
             [['email'], 'unique'],
             [['username'], 'unique'],
             [['identificator_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => IdentificatorType::className(), 'targetAttribute' => ['identificator_type_id' => 'id']],
             [['user_state_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserState::className(), 'targetAttribute' => ['user_state_id' => 'id']],
             [['user_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserType::className(), 'targetAttribute' => ['user_type_id' => 'id']],
+        ];
+    }
+
+    public function behaviors() {
+        return [
+            TimestampBehavior::className(),
         ];
     }
 

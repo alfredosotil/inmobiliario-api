@@ -8,6 +8,7 @@
 
 namespace app\controllers;
 
+use Yii;
 use yii\helpers\ArrayHelper;
 use yii\rest\ActiveController;
 use yii\data\ActiveDataProvider;
@@ -19,6 +20,7 @@ use yii\filters\auth\HttpBasicAuth;
 use yii\web\Response;
 use yii\filters\AccessControl;
 use yii\filters\Cors;
+use \Firebase\JWT\JWT;
 
 /**
  * Description of UserController
@@ -60,6 +62,32 @@ class UserController extends ActiveController {
             'class' => Cors::className(),
         ];
         return $behaviors;
+    }
+
+    public function actions() {
+        $actions = parent::actions();
+        unset($actions['create']);
+        return $actions;
+    }
+
+    public function actionCreate() {
+        $model = new $this->modelClass;
+        $model->load(Yii::$app->request->post(), '');        
+        $key = md5((isset($model->password))?$model->password:"nodata");
+        $token = array(
+            "id" => uniqid('inmo_', true),
+            "iss" => "http://www.inmobiliario.com.pe",
+            "aud" => "http://www.inmobiliario.com.pe",
+//            "iat" => time(),
+//            "nbf" => time() + 60,
+//            "exp" => time() + 3600,            
+        );
+//        $model->birthday = date('Y-m-d', strtotime($this->birthday));
+        $model->auth_key = JWT::encode($token, $key);
+        $model->user_state_id = 1;
+        $model->active = 1;
+        $model->save();
+        return $model;
     }
 
     public function actionSearch() {
