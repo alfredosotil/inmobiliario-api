@@ -7,6 +7,10 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'components' => [
+//        'jwt' => [
+//            'class' => 'sizeg\jwt\Jwt',
+//            'key' => 'inmobiliario',
+//        ],
         'request' => [
             'class' => '\yii\web\Request',
             'enableCookieValidation' => false,
@@ -32,9 +36,10 @@ $config = [
         ],
         'user' => [
             'identityClass' => 'app\models\User',
+            'enableAutoLogin' => true,
             'enableSession' => false,
             'loginUrl' => null,
-//            'enableAutoLogin' => true,
+            'enableAutoLogin' => true,
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -68,7 +73,7 @@ $config = [
                 'gii' => 'gii',
                 'gii/<controller:\w+>' => 'gii/<controller>',
                 'gii/<controller:\w+>/<action:\w+>' => 'gii/<controller>/<action>',
-                ['class' => 'yii\rest\UrlRule', 'controller' => ['user', ], 'extraPatterns' => ['GET search' => 'search'], 'pluralize' => false],
+                ['class' => 'yii\rest\UrlRule', 'controller' => ['user',], 'extraPatterns' => ['GET search' => 'search'], 'pluralize' => false],
                 '<controller:\w+>/<id:\d+>' => '<controller>/view',
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',

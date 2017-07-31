@@ -11,8 +11,11 @@ use yii\filters\ContentNegotiator;
 use yii\web\Response;
 use yii\filters\AccessControl;
 use yii\rest\Controller;
-use yii\filters\auth\HttpBearerAuth;
 use yii\filters\Cors;
+use yii\filters\auth\CompositeAuth;
+use yii\filters\auth\HttpBasicAuth;
+use yii\filters\auth\HttpBearerAuth;
+use yii\filters\auth\QueryParamAuth;
 
 class ApiController extends Controller {
 
@@ -22,8 +25,12 @@ class ApiController extends Controller {
     public function behaviors() {
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
-            'class' => HttpBearerAuth::className(),
-            'only' => ['dashboard'],
+            'class' => CompositeAuth::className(),
+            'authMethods' => [
+                HttpBasicAuth::className(),
+//                HttpBearerAuth::className(),
+//                QueryParamAuth::className(),
+            ],
         ];
         $behaviors['contentNegotiator'] = [
             'class' => ContentNegotiator::className(),
@@ -96,7 +103,7 @@ class ApiController extends Controller {
 //                return ['access_token' => Yii::$app->request->getBodyParam('email')];
 
         if ($model->load(Yii::$app->getRequest()->getBodyParams(), '') && $model->login()) {
-            return ['access_token' => Yii::$app->user->identity->getAuthKey()];
+            return ['access_token' => Yii::$app->user->identity->getAccessToken()];
 //            return ['access_token' => '1234567890'];
         } else {
             $model->validate();
