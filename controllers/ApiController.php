@@ -26,10 +26,16 @@ class ApiController extends Controller {
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
             'class' => CompositeAuth::className(),
+            'except' => ['search', 'login', 'resetpassword'],
             'authMethods' => [
-                HttpBasicAuth::className(),
-//                HttpBearerAuth::className(),
-//                QueryParamAuth::className(),
+                [
+                    'class' => HttpBasicAuth::className(),
+                    'auth' => function($username, $password) {
+                        return \app\models\User::findByUsernameAndPassword($username, $password);
+                    },
+                ],
+                HttpBearerAuth::className(),
+                QueryParamAuth::className(),
             ],
         ];
         $behaviors['contentNegotiator'] = [
@@ -97,18 +103,31 @@ class ApiController extends Controller {
 //            $str .= "$key: $value, ";
 //        }
 //        return ['access_token' => $str];
-        $model = new LoginForm();
+//        $model = new LoginForm();
 //        $model->email = 'alfredo_sotil@hotmail.com';//Yii::$app->request->getBodyParam('email');
 //        $model->password = 'amorciego';//Yii::$app->request->getBodyParam('password');
 //                return ['access_token' => Yii::$app->request->getBodyParam('email')];
-
-        if ($model->load(Yii::$app->getRequest()->getBodyParams(), '') && $model->login()) {
-            return ['access_token' => Yii::$app->user->identity->getAccessToken()];
-//            return ['access_token' => '1234567890'];
-        } else {
-            $model->validate();
-            return $model;
+        $data = Yii::$app->getRequest()->getBodyParams();
+        $model = \app\models\User::findOne(["email" => $data["email"]]);
+        if (empty($model)) {
+            throw new \yii\web\NotFoundHttpException('User not found');
         }
+        if ($model->validatePassword($data["password"])) {
+//            $model->last_login = Yii::$app->formatter->asTimestamp(date_create());
+            Yii::$app->user->login($model, 3600*24*30);
+            return ['access_token' => Yii::$app->user->identity->getAccessToken()];
+//            $model->save(false);
+//            return $model; //return whole user model including auth_key or you can just return $model["auth_key"];
+        } else {
+//            throw new \yii\web\ForbiddenHttpException();
+            return ['field' => 'Clave Incorrecta...'];
+        }
+//        if ($model->load(Yii::$app->getRequest()->getBodyParams(), '') && $model->login()) {
+//            return ['access_token' => Yii::$app->user->identity->getAccessToken()];
+//        } else {
+//            $model->validate();
+//            return $model;
+//        }
     }
 
     public function actionDashboard() {

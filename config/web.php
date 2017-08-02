@@ -23,9 +23,9 @@ $config = [
 //        'response' => [
 //            'format' => yii\web\Response::FORMAT_JSON,
 //            'charset' => 'UTF-8',
-//            'on beforeSend' => function ($event) {
-//                header("Access-Control-Allow-Origin: *");
-//            }
+////            'on beforeSend' => function ($event) {
+////                header("Access-Control-Allow-Origin: *");
+////            }
 //        ],
 //        'session' => [
 //            // this is the name of the session cookie used for login on the backend

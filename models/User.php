@@ -45,6 +45,13 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
         return 'user';
     }
 
+    public function fields() {
+        $fields = parent::fields();
+        // remove fields that contain sensitive information
+        unset($fields['auth_key'], $fields['access_token'], $fields['password']);
+        return $fields;
+    }
+    
     /**
      * @inheritdoc
      */

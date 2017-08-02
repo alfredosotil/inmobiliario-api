@@ -35,19 +35,11 @@ class UserController extends ActiveController {
 
     public function behaviors() {
         $behaviors = parent::behaviors();
-//        $behaviors['authenticator'] = [
-//            'except' => ['create', 'login', 'resetpassword'],
-//            'class' => HttpBasicAuth::className(),
-//            'auth' => function($username, $password) {
-//                return \app\models\User::findByUsernameAndPassword($username, $password);
-//            },
-//            'only' => ['*'],
-//        ];
         $behaviors['authenticator'] = [
             'class' => CompositeAuth::className(),
+            'except' => ['search', 'login', 'resetpassword'],
             'authMethods' => [
                 [
-//            'except' => ['create', 'login', 'resetpassword'],
                     'class' => HttpBasicAuth::className(),
                     'auth' => function($username, $password) {
                         return \app\models\User::findByUsernameAndPassword($username, $password);
@@ -117,10 +109,11 @@ class UserController extends ActiveController {
                 }
             }
             try {
-                $provider = new ActiveDataProvider([
-                    'query' => $model->find()->where($_GET)->with($this->expand)->asArray(),
-                    'pagination' => false
-                ]);
+                return $model->find()->select('name, lastname, identificator, identificator_type_id, email, username, sex, phone')->where($_GET)->with($this->expand)->asArray()->all();
+//                $provider = new ActiveDataProvider([
+//                    'query' => $model->find()->select('name')->where($_GET)->with($this->expand)->asArray(),
+//                    'pagination' => false
+//                ]);
             } catch (Exception $ex) {
                 throw new \yii\web\HttpException(500, 'Internal server error');
             }
@@ -129,7 +122,7 @@ class UserController extends ActiveController {
 //            } else {
 //                return $provider;
 //            }
-            return $provider;
+//            return $provider;
         } else {
             throw new \yii\web\HttpException(400, 'There are no query string');
         }
