@@ -27,6 +27,12 @@ use Yii;
  * @property string $owner_phone
  * @property string $adress
  * @property string $video_url
+ * @property string $references
+ * @property integer $priority
+ * @property double $garages
+ * @property double $yearsold
+ * @property integer $furnished
+ * @property string $description
  *
  * @property AccessPropertyDetails[] $accessPropertyDetails
  * @property PropertyState $propertyState
@@ -50,9 +56,9 @@ class Property extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['property_type_id', 'property_state_id', 'price', 'money', 'comission', 'owner', 'owner_email', 'owner_phone'], 'required'],
-            [['property_type_id', 'property_state_id'], 'integer'],
-            [['price', 'comission', 'area', 'bathroom', 'bedroom'], 'number'],
+            [['property_type_id', 'property_state_id', 'price', 'money', 'comission', 'owner', 'owner_email', 'owner_phone', 'references', 'priority', 'garages', 'yearsold', 'furnished', 'description'], 'required'],
+            [['property_type_id', 'property_state_id', 'priority', 'furnished'], 'integer'],
+            [['price', 'comission', 'area', 'bathroom', 'bedroom', 'garages', 'yearsold'], 'number'],
             [['created_at', 'updated_at', 'date_start', 'date_end'], 'safe'],
             [['money'], 'string', 'max' => 1],
             [['longitude', 'latitude'], 'string', 'max' => 45],
@@ -60,6 +66,8 @@ class Property extends \yii\db\ActiveRecord
             [['owner_email', 'adress'], 'string', 'max' => 100],
             [['owner_phone'], 'string', 'max' => 20],
             [['video_url'], 'string', 'max' => 150],
+            [['references'], 'string', 'max' => 500],
+            [['description'], 'string', 'max' => 1000],
             [['property_state_id'], 'exist', 'skipOnError' => true, 'targetClass' => PropertyState::className(), 'targetAttribute' => ['property_state_id' => 'id']],
             [['property_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => PropertyType::className(), 'targetAttribute' => ['property_type_id' => 'id']],
         ];
@@ -91,6 +99,12 @@ class Property extends \yii\db\ActiveRecord
             'owner_phone' => 'Owner Phone',
             'adress' => 'Adress',
             'video_url' => 'Video Url',
+            'references' => 'References',
+            'priority' => 'Priority',
+            'garages' => 'Garages',
+            'yearsold' => 'Yearsold',
+            'furnished' => 'Furnished',
+            'description' => 'Description',
         ];
     }
 

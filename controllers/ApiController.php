@@ -24,20 +24,20 @@ class ApiController extends Controller {
      */
     public function behaviors() {
         $behaviors = parent::behaviors();
-        $behaviors['authenticator'] = [
-            'class' => CompositeAuth::className(),
-            'except' => ['search', 'login', 'resetpassword'],
-            'authMethods' => [
-                [
-                    'class' => HttpBasicAuth::className(),
-                    'auth' => function($username, $password) {
-                        return \app\models\User::findByUsernameAndPassword($username, $password);
-                    },
-                ],
-                HttpBearerAuth::className(),
-                QueryParamAuth::className(),
-            ],
-        ];
+//        $behaviors['authenticator'] = [
+//            'class' => CompositeAuth::className(),
+//            'except' => ['search', 'login', 'resetpassword'],
+//            'authMethods' => [
+//                [
+//                    'class' => HttpBasicAuth::className(),
+//                    'auth' => function($username, $password) {
+//                        return \app\models\User::findByUsernameAndPassword($username, $password);
+//                    },
+//                ],
+//                HttpBearerAuth::className(),
+//                QueryParamAuth::className(),
+//            ],
+//        ];
         $behaviors['contentNegotiator'] = [
             'class' => ContentNegotiator::className(),
             'formats' => [
@@ -56,10 +56,14 @@ class ApiController extends Controller {
             ],
         ];
         $behaviors['corsFilter'] = [
-            'class' => Cors::className(),
+            'class' => \yii\filters\Cors::className(),
             'cors' => [
                 'Origin' => ['*'],
+                'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+                'Access-Control-Request-Headers' => ['*'],
                 'Access-Control-Allow-Credentials' => true,
+                'Access-Control-Max-Age' => 86400,
+                'Access-Control-Expose-Headers' => ['Origin', 'X-Requested-With', 'Content-Type', 'accept', 'Authorization'],
             ],
         ];
         return $behaviors;
