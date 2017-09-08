@@ -25,7 +25,7 @@ use Yii;
  * @property string $owner
  * @property string $owner_email
  * @property string $owner_phone
- * @property string $adress
+ * @property string $address
  * @property string $video_url
  * @property string $references
  * @property integer $priority
@@ -63,7 +63,7 @@ class Property extends \yii\db\ActiveRecord
             [['money'], 'string', 'max' => 1],
             [['longitude', 'latitude'], 'string', 'max' => 45],
             [['owner'], 'string', 'max' => 50],
-            [['owner_email', 'adress'], 'string', 'max' => 100],
+            [['owner_email', 'address'], 'string', 'max' => 100],
             [['owner_phone'], 'string', 'max' => 20],
             [['video_url'], 'string', 'max' => 150],
             [['references'], 'string', 'max' => 500],
@@ -97,7 +97,7 @@ class Property extends \yii\db\ActiveRecord
             'owner' => 'Owner',
             'owner_email' => 'Owner Email',
             'owner_phone' => 'Owner Phone',
-            'adress' => 'Adress',
+            'address' => 'Address',
             'video_url' => 'Video Url',
             'references' => 'References',
             'priority' => 'Priority',

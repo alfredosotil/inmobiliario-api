@@ -13,6 +13,7 @@ class ImgProperty extends Model {
      * @var UploadedFile
      */
     public $imageFile;
+    public $imageFileName;
 
     public function rules() {
         return [
@@ -29,6 +30,7 @@ class ImgProperty extends Model {
         $ext = end((explode(".", $this->imageFile->name)));
         $filename = Yii::$app->security->generateRandomString().".{$ext}";
         if ($this->validate()) {
+            $this->imageFileName = $filename;
            $this->imageFile->saveAs(Yii::$app->basePath . Yii::$app->params['sourceDirProperty'] . $filename);
             Image::thumbnail(Yii::$app->basePath . Yii::$app->params['sourceDirProperty'] . $filename, 524, 354)
                     ->save(Yii::$app->basePath . Yii::$app->params['sourceDirProperty'] . 'md_' . $filename, ['quality' => 100]);

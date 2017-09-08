@@ -78,6 +78,7 @@ class ApiController extends Controller {
         if (Yii::$app->request->isPost) {
             if ($model->upload()) {
                 $response['saved'] = 'yes';
+                $response['imageFileName'] = $model->imageFileName;
             } else {
                 $response['saved'] = 'no';
             }
