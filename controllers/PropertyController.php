@@ -124,6 +124,40 @@ class PropertyController extends ActiveController {
         }
     }
 
+    public function actionCreatedetailsproperty() {
+        $result = [];
+        if (Yii::$app->request->isPost) {
+            $propertyId = Yii::$app->request->post('property');
+            $details = Yii::$app->request->post('details');
+            foreach ($details as $value) {
+                $apd = new \app\models\AccessPropertyDetails();
+                $apd->property_id = $propertyId;
+                $apd->property_details_id = $value;
+                if ($apd->save()) {
+                    array_push($result, $value);
+                }
+            }
+        }
+        return $result;
+    }
+
+    public function actionCreateimgproperty() {        
+        $result = [];
+        if (Yii::$app->request->isPost) {
+            $propertyId = Yii::$app->request->post('property');
+            $$imgs = Yii::$app->request->post('imgs');
+            foreach ($$imgs as $value) {
+                $pi = new \app\models\PropertyImages();
+                $pi->property_id = $propertyId;
+                $pi->name = $value;
+                if ($pi->save()) {
+                    array_push($result, $value);
+                }
+            }
+        }
+        return $result;
+    }
+
     public function actionGetlistpropertytype() {
         return (new \app\models\PropertyType())->find()->asArray()->all();
     }
@@ -131,8 +165,9 @@ class PropertyController extends ActiveController {
     public function actionGetlistpropertystate() {
         return (new \app\models\PropertyState())->find()->asArray()->all();
     }
-    
+
     public function actionGetlistdetailsproperty() {
         return (new \app\models\PropertyDetails())->find()->asArray()->all();
     }
+
 }
